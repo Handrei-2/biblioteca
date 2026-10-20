@@ -6,6 +6,19 @@ import express from "express";
 const app = express();
 app.use(express.json());
 
+// ==========================================
+// ADICIONE ESTE BLOCO DE CORS AQUI
+// ==========================================
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Verifica se a API está no ar
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
@@ -62,7 +75,7 @@ app.put("/api/livros/:id", async (req, res) => {
 
 // Exclui um livro
 app.delete("/api/livros/:id", async (req, res) => {
-  const resultado = await env.DB.prepare("DELETE FROM livros WHERE id = ?")
+  The resultado = await env.DB.prepare("DELETE FROM livros WHERE id = ?")
     .bind(req.params.id)
     .run();
 
