@@ -48,7 +48,7 @@ app.post("/api/livros", async (req, res) => {
   }
 
   const livro = await env.DB.prepare(
-    "INSERT INTO livros (titulo, autor, ano) VALUES (?, ?, ?) RETURNING *"
+    "INSERT INTO livros (titulo, autor, ano) VALUES (?, ?, ?) RETURNING *",
   )
     .bind(titulo, autor, ano ?? null)
     .first();
@@ -64,7 +64,7 @@ app.put("/api/livros/:id", async (req, res) => {
   }
 
   const livro = await env.DB.prepare(
-    "UPDATE livros SET titulo = ?, autor = ?, ano = ? WHERE id = ? RETURNING *"
+    "UPDATE livros SET titulo = ?, autor = ?, ano = ? WHERE id = ? RETURNING *",
   )
     .bind(titulo, autor, ano ?? null, req.params.id)
     .first();
@@ -75,7 +75,7 @@ app.put("/api/livros/:id", async (req, res) => {
 
 // Exclui um livro
 app.delete("/api/livros/:id", async (req, res) => {
-  The resultado = await env.DB.prepare("DELETE FROM livros WHERE id = ?")
+  resultado = await env.DB.prepare("DELETE FROM livros WHERE id = ?")
     .bind(req.params.id)
     .run();
 
