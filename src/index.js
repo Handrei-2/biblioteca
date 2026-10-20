@@ -74,6 +74,7 @@ app.put("/api/livros/:id", async (req, res) => {
 });
 
 // Exclui um livro
+// Que va essa merda agr
 app.delete("/api/livros/:id", async (req, res) => {
   resultado = await env.DB.prepare("DELETE FROM livros WHERE id = ?")
     .bind(req.params.id)
