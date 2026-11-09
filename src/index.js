@@ -99,3 +99,17 @@ app.use((erro, req, res, next) => {
 // requisições ao Express que "escuta" nesta porta.
 app.listen(3000);
 export default httpServerHandler({ port: 3000 });
+
+// Rate limit: no máximo 3 requisições por minuto para cada IP.
+// O limite fica configurado no wrangler.jsonc (binding RATE_LIMITER).
+app.use(async (req, res, next) => {
+  const ip = req.get("cf-connecting-ip") ?? "desconhecido";
+  const { success } = await env.RATE_LIMITER.limit({ key: ip });
+  if (!success) {
+    res.set("Retry-After", "60");
+    return res
+      .status(429)
+      .json({ erro: "Muitas requisições. Tente novamente em 1 minuto." });
+  }
+  next();
+});
